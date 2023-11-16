@@ -12,9 +12,9 @@ import lombok.*;
 @Setter
 @Getter
 public class SideMenu {
-    @Id
     @Column
-    private int index;
+    private Integer index;
+    @Id
     @Column
     private String menu_key;
     @Column

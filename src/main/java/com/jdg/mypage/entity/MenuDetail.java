@@ -10,9 +10,9 @@ import lombok.*;
 @Getter
 @Setter
 public class MenuDetail {
-    @Id
     @Column
-    private int index;
+    private Integer index;
+    @Id
     @Column
     private String menu_sub_key;
     @Column
