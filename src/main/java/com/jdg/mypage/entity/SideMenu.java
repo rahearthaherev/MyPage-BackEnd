@@ -12,8 +12,6 @@ import lombok.*;
 @Setter
 @Getter
 public class SideMenu {
-    @Column
-    private Integer index;
     @Id
     @Column
     private String menu_key;
