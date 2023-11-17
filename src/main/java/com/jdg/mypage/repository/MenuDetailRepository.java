@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface MenuDetailRepository extends CrudRepository<MenuDetail, Long> {
-@Query("SELECT nextval('menu_detail_sequence')")
+    @Query("SELECT nextval('menu_detail_sequence')")
     int findNextIndex();
 }
