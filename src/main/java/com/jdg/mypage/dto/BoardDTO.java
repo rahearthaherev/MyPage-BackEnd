@@ -15,4 +15,5 @@ public class BoardDTO {
     private String modified_time;
     private String menu_sub_key;
     private String search;
+    private String content;
 }

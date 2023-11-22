@@ -27,4 +27,6 @@ public class BoardList {
     private String modified_time;
     @Column
     private String menu_sub_key;
+    @Column
+    private String content;
 }

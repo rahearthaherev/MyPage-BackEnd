@@ -37,4 +37,8 @@ public class BoardController {
         return  boardLists;
     }
 
+    @PostMapping("submit")
+    public void submitBoard(@RequestBody BoardDTO boardDTO) {
+        log.info(boardDTO.toString());
+    }
 }
