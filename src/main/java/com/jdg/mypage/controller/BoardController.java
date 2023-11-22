@@ -41,4 +41,12 @@ public class BoardController {
     public void submitBoard(@RequestBody BoardDTO boardDTO) {
         log.info(boardDTO.toString());
     }
+
+    @PostMapping("getpage")
+    public BoardList getBoard(@RequestBody String[] key) {
+        log.info(key[0]);
+        BoardList boardList = boardRepository.getBoard(key[0]);
+        log.info(boardList.toString());
+        return boardList;
+    }
 }
