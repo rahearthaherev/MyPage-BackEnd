@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Timestamp;
+
 @Entity
 @Slf4j
 @NoArgsConstructor
@@ -12,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @ToString
 public class BoardList {
-    @Column
-    private int index;
     @Id
     @Column
     private String board_key;
@@ -22,11 +22,13 @@ public class BoardList {
     @Column
     private String author;
     @Column
-    private String create_time;
+    private Timestamp create_time;
     @Column
-    private String modified_time;
+    private Timestamp modified_time;
     @Column
     private String menu_sub_key;
     @Column
     private String content;
+
+
 }

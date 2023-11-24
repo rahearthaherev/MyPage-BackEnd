@@ -5,6 +5,7 @@ import com.jdg.mypage.entity.BoardList;
 import com.jdg.mypage.entity.MenuDetail;
 import com.jdg.mypage.repository.BoardRepository;
 import com.jdg.mypage.repository.MenuDetailRepository;
+import com.jdg.mypage.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public class BoardController {
     private MenuDetailRepository menuDetailRepository;
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private BoardService boardService;
     @PostMapping("header")
     public List<MenuDetail> GetMenuList(@RequestBody MenuDetail menu) {
         List<MenuDetail> menuList = menuDetailRepository.findSameCatagoryMenu(menu.getMenu_sub_key());
@@ -38,8 +41,9 @@ public class BoardController {
     }
 
     @PostMapping("submit")
-    public void submitBoard(@RequestBody BoardDTO boardDTO) {
+    public boolean submitBoard(@RequestBody BoardDTO boardDTO) {
         log.info(boardDTO.toString());
+        return boardService.addBoard(boardDTO);
     }
 
     @PostMapping("getpage")
@@ -48,5 +52,11 @@ public class BoardController {
         BoardList boardList = boardRepository.getBoard(key[0]);
         log.info(boardList.toString());
         return boardList;
+    }
+
+    @PostMapping("deleteboard")
+    public boolean deleteBoard(@RequestBody BoardList board) {
+        boardRepository.delete(board);
+        return true;
     }
 }
