@@ -19,4 +19,6 @@ public class ClothesList {
     @Column
     @Id
     private int index;
+    @Column
+    private int status;
 }
