@@ -4,14 +4,21 @@ import com.jdg.mypage.dto.StylingDTO;
 import com.jdg.mypage.dto.WeatherDTO;
 import com.jdg.mypage.entity.ClothesList;
 import com.jdg.mypage.entity.ClothesType;
+import com.jdg.mypage.entity.StylingData;
+import com.jdg.mypage.mapper.StylingMapper;
 import com.jdg.mypage.repository.ClothesListRepository;
 import com.jdg.mypage.repository.ClothesTypeRepository;
+import com.jdg.mypage.repository.StylingRepository;
 import com.jdg.mypage.service.StylingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @Slf4j
@@ -25,6 +32,8 @@ public class StylingController {
     private ClothesListRepository clothesListRepository;
     @Autowired
     private StylingService stylingService;
+    @Autowired
+    private StylingRepository stylingRepository;
 
     @GetMapping("gettype")
     public Iterable<ClothesType> getType() {
@@ -58,9 +67,16 @@ public class StylingController {
         return true;
     }
 
-    @GetMapping("styling")
+    @GetMapping("weatherinfo")
     public StylingDTO getWeather(){
+        //日付取得
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        Timestamp timestamp = Timestamp.valueOf(startOfDay);
 
-        return stylingService.getWeatherDataForStyling();
+        StylingData stylingData = stylingRepository.findByDate(timestamp);
+        StylingDTO stylingDTO = StylingMapper.INSTANCE.entityToDTO(stylingData);
+        log.info(stylingDTO.toString());
+        return stylingDTO;
     }
 }

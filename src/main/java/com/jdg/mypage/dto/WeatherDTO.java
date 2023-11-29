@@ -3,6 +3,9 @@ package com.jdg.mypage.dto;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -27,6 +30,13 @@ public class WeatherDTO {
         stylingDTO.setCurrentTemperature(getTemperature());
         stylingDTO.setMaxTemperature(getMaxTemperature());
         stylingDTO.setMinTemperature(getMinTemperature());
+
+        //日付取得
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        Timestamp timestamp = Timestamp.valueOf(startOfDay);
+
+        stylingDTO.setDate(timestamp);
 
         return stylingDTO;
     }

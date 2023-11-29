@@ -37,7 +37,7 @@ public class MenuController {
 
     @GetMapping("menuitem")
     public Iterable<MenuDetail> GetMenuItem() {
-        Iterable<MenuDetail> menuDetails = menuDetailRepository.findAll();
+        Iterable<MenuDetail> menuDetails = menuDetailRepository.findAllOrderByKey();
 
         return menuDetails;
     }

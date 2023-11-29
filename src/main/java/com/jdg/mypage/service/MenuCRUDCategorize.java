@@ -8,6 +8,7 @@ import com.jdg.mypage.entity.SideMenu;
 import com.jdg.mypage.repository.MenuDetailRepository;
 import com.jdg.mypage.repository.MenuTypeRepository;
 import com.jdg.mypage.repository.SideMenuRepository;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Setter
 @Getter
 @Slf4j
+@Transactional
 public class MenuCRUDCategorize {
     @Autowired
     private MenuDetailRepository menuDetailRepository;
@@ -35,10 +37,11 @@ public class MenuCRUDCategorize {
     private final String MENU = "menu";
     public void addMenu(MenuCRUD menuCRUD) {
         try {
+            int lastId = Integer.parseInt(menuTypeRepository.findLastId());
+            lastId++;
             if (menuCRUD.getDetail_id() == null) {
                 MenuType menuTypeEntity = menuCRUD.toMenuTypeEntity();
-                int lastId = Integer.parseInt(menuTypeRepository.findLastId());
-                String detail_key = String.format("%05d", ++lastId);
+                String detail_key = String.format("%05d", lastId);
                 menuTypeEntity.setDetail_key(detail_key);
                 log.info(menuTypeEntity.toString());
                 menuTypeRepository.save(menuTypeEntity);
@@ -52,7 +55,7 @@ public class MenuCRUDCategorize {
 
             } else {
                 MenuDetail menuDetailEntity = menuCRUD.toMenuDetailEntity();
-                String sub_key = menuCRUD.getUpdated().substring(0, 2) + String.format("%03d", menuDetailRepository.findNextIndex());
+                String sub_key = menuCRUD.getUpdated().substring(0, 2) + String.format("%03d", lastId);
                 menuDetailEntity.setMenu_sub_key(sub_key);
                 log.info(menuDetailEntity.toString());
                 menuDetailRepository.save(menuDetailEntity);

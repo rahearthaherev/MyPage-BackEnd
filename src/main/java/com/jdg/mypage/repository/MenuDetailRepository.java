@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MenuDetailRepository extends CrudRepository<MenuDetail, Long> {
+    @Query("SELECT m FROM MenuDetail m ORDER BY m.menu_sub_key")
+    Iterable<MenuDetail> findAllOrderByKey();
+
     @Query("SELECT nextval('menu_detail_sequence')")
     int findNextIndex();
 
