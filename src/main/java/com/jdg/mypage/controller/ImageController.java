@@ -65,7 +65,7 @@ public class ImageController {
             System.out.println("fileExtension= " + fileExtension);
             System.out.println("fileSize= " + fileSize);
 
-            return new ResponseEntity<Object>("http://localhost:6974/board/getimage/" + fileId + "/" + fileExtension, HttpStatus.OK);
+            return new ResponseEntity<Object>("http://localhost:7000/board/getimage/" + fileId + "/" + fileExtension, HttpStatus.OK);
         } catch(IOException e) {
             return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
         }

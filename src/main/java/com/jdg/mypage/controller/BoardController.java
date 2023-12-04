@@ -36,7 +36,6 @@ public class BoardController {
         String key = boardDTO.getMenu_sub_key();
         String search = boardDTO.getSearch();
         Iterable<BoardList> boardLists = boardRepository.getBoardList(key, search);
-        log.info(boardLists.toString());
         return  boardLists;
     }
 

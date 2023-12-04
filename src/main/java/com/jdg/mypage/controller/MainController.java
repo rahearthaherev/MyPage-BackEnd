@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //3000번 포트에서 접속 허용
-@CrossOrigin(originPatterns = "http://localhost:3000")
+@CrossOrigin(originPatterns = "*")
 //해당 클래스를 Controller로 인식
 //RestController = Controller + ResponseBody
 @RestController

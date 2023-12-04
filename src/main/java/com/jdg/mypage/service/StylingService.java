@@ -31,7 +31,7 @@ public class StylingService {
         return webClient.get().uri(URL).retrieve().bodyToMono(WeatherDTO.class);
     }
 
-    @Scheduled(cron = "0 34 10  * * ?")
+    @Scheduled(cron = "0 15 9  * * ?")
     public void getWeatherDataForStyling() {
 
         String URL = "https://api.pirateweather.net/forecast/tnZVRSTIILHMNbidLrb6uQzwEBiP0HX4/35.6894,139.692?exclude=alerts,minutely&units=si";

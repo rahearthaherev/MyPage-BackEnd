@@ -1,14 +1,12 @@
 package com.jdg.mypage.controller;
 
+import com.jdg.mypage.dto.PersonalInfoDTO;
 import com.jdg.mypage.dto.StylingDTO;
 import com.jdg.mypage.dto.WeatherDTO;
-import com.jdg.mypage.entity.ClothesList;
-import com.jdg.mypage.entity.ClothesType;
-import com.jdg.mypage.entity.StylingData;
+import com.jdg.mypage.entity.*;
+import com.jdg.mypage.mapper.ProjectMapper;
 import com.jdg.mypage.mapper.StylingMapper;
-import com.jdg.mypage.repository.ClothesListRepository;
-import com.jdg.mypage.repository.ClothesTypeRepository;
-import com.jdg.mypage.repository.StylingRepository;
+import com.jdg.mypage.repository.*;
 import com.jdg.mypage.service.StylingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,11 @@ import reactor.core.publisher.Mono;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @Slf4j
-@CrossOrigin(originPatterns = "http://localhost:3000")
+@CrossOrigin(originPatterns = "*")
 @RequestMapping("/projects/styling/")
 @Transactional
 public class StylingController {
@@ -34,6 +33,10 @@ public class StylingController {
     private StylingService stylingService;
     @Autowired
     private StylingRepository stylingRepository;
+    @Autowired
+    private StylingPersonalInfoRepository stylingPersonalInfoRepository;
+    @Autowired
+    private ProjectListRepository projectListRepository;
 
     @GetMapping("gettype")
     public Iterable<ClothesType> getType() {
@@ -78,5 +81,49 @@ public class StylingController {
         StylingDTO stylingDTO = StylingMapper.INSTANCE.entityToDTO(stylingData);
         log.info(stylingDTO.toString());
         return stylingDTO;
+    }
+
+    @GetMapping("getpersonalinfo")
+    public PersonalInfoDTO getPersonalInfo() {
+        final String projectKey = getProectKey("Today's Styling");
+        if(projectKey == null) {
+            return null;
+        }
+
+        Optional<StylingPersonalInfo> optionalStylingPersonalInfo = stylingPersonalInfoRepository.findById(projectKey);
+        if(!optionalStylingPersonalInfo.isPresent()){
+            log.info("Personal Data is not defined");
+            return null;
+
+        }
+        StylingPersonalInfo stylingPersonalInfo = optionalStylingPersonalInfo.get();
+        log.info(stylingPersonalInfo.toString());
+        return StylingMapper.INSTANCE.entityToDTO(stylingPersonalInfo);
+    }
+
+    @PostMapping("updatepersonalinfo")
+    public boolean updatePersonalInfo(@RequestBody PersonalInfoDTO personalInfoDTO) {
+        log.info(personalInfoDTO.toString());
+        final String projectKey = getProectKey("Today's Styling");
+        if(projectKey == null) {
+            return false;
+        }
+        StylingPersonalInfo stylingPersonalInfo =  StylingMapper.INSTANCE.dtoToEntity(personalInfoDTO);
+        stylingPersonalInfo.setProjectKey(projectKey);
+
+        stylingPersonalInfoRepository.save(stylingPersonalInfo);
+
+        return true;
+    }
+
+    private String getProectKey(String name) {
+        Optional<ProjectList> optionalProjectList = projectListRepository.findById(name);
+        if(!optionalProjectList.isPresent()){
+            log.info("Project key is not defined");
+            return null;
+        }
+        ProjectList projectList = optionalProjectList.get();
+        log.info(projectList.toString());
+        return ProjectMapper.INSTANCE.entityToDto(projectList).getProjectKey();
     }
 }
