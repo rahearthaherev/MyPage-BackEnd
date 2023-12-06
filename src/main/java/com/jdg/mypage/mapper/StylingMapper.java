@@ -14,6 +14,11 @@ public interface StylingMapper {
     StylingDTO entityToDTO(StylingData stylingData);
     StylingData dtoToEntity(StylingDTO stylingDTO);
 
+
+@Mapper
+public interface PersonalInfoMapper {
+    PersonalInfoMapper INSTANCE = Mappers.getMapper(PersonalInfoMapper.class);
     StylingPersonalInfo dtoToEntity(PersonalInfoDTO personalInfoDTO);
     PersonalInfoDTO entityToDTO(StylingPersonalInfo stylingPersonalInfo);
+}
 }

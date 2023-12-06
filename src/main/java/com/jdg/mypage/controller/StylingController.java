@@ -32,8 +32,6 @@ public class StylingController {
 
     private final ClothesListRepository clothesListRepository;
 
-    private final StylingService stylingService;
-
     private final StylingRepository stylingRepository;
 
     private final StylingPersonalInfoRepository stylingPersonalInfoRepository;
@@ -101,7 +99,7 @@ public class StylingController {
         }
         StylingPersonalInfo stylingPersonalInfo = optionalStylingPersonalInfo.get();
         log.info(stylingPersonalInfo.toString());
-        return StylingMapper.INSTANCE.entityToDTO(stylingPersonalInfo);
+        return StylingMapper.PersonalInfoMapper.INSTANCE.entityToDTO(stylingPersonalInfo);
     }
 
     @PostMapping("updatepersonalinfo")
@@ -111,7 +109,7 @@ public class StylingController {
         if(projectKey == null) {
             return false;
         }
-        StylingPersonalInfo stylingPersonalInfo =  StylingMapper.INSTANCE.dtoToEntity(personalInfoDTO);
+        StylingPersonalInfo stylingPersonalInfo =  StylingMapper.PersonalInfoMapper.INSTANCE.dtoToEntity(personalInfoDTO);
         stylingPersonalInfo.setProjectKey(projectKey);
 
         stylingPersonalInfoRepository.save(stylingPersonalInfo);
