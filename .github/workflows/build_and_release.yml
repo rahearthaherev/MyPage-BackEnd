@@ -26,6 +26,10 @@ jobs:
       with:
         java-version: '21'
         distribution: 'oracle'
+    
+    ## 권한 부여
+    - name: Make Gradlew Executable
+      run: chmod +x /home/runner/work/MyPage-BackEnd/MyPage-BackEnd/gradlew
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
