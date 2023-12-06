@@ -8,6 +8,7 @@ import com.jdg.mypage.mapper.ProjectMapper;
 import com.jdg.mypage.mapper.StylingMapper;
 import com.jdg.mypage.repository.*;
 import com.jdg.mypage.service.StylingService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,19 +25,21 @@ import java.util.Optional;
 @CrossOrigin(originPatterns = "*")
 @RequestMapping("/projects/styling/")
 @Transactional
+@AllArgsConstructor
 public class StylingController {
-    @Autowired
-    private ClothesTypeRepository clothesTypeRepository;
-    @Autowired
-    private ClothesListRepository clothesListRepository;
-    @Autowired
-    private StylingService stylingService;
-    @Autowired
-    private StylingRepository stylingRepository;
-    @Autowired
-    private StylingPersonalInfoRepository stylingPersonalInfoRepository;
-    @Autowired
-    private ProjectListRepository projectListRepository;
+
+    private final ClothesTypeRepository clothesTypeRepository;
+
+    private final ClothesListRepository clothesListRepository;
+
+    private final StylingService stylingService;
+
+    private final StylingRepository stylingRepository;
+
+    private final StylingPersonalInfoRepository stylingPersonalInfoRepository;
+
+    private final ProjectListRepository projectListRepository;
+
 
     @GetMapping("gettype")
     public Iterable<ClothesType> getType() {
