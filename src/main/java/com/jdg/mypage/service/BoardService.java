@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class BoardService {
     @Autowired
     BoardRepository boardRepository;
-    public boolean addBoard(BoardDTO boardDTO) {
+    public BoardDTO addBoard(BoardDTO boardDTO) {
         try {
             if (boardDTO.getBoard_key() == null) {
                 int nextIndex = boardRepository.findCurrentIndex();
@@ -34,10 +34,10 @@ public class BoardService {
             }
             log.info(boardDTO.toBoardList().toString());
             boardRepository.save(boardDTO.toBoardList());
-            return true;
+            return boardDTO;
         }catch (Exception e){
             log.info(e.getMessage());
-            return false;
+            return null;
         }
     }
 }

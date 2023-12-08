@@ -71,6 +71,13 @@ public class StylingController {
         return true;
     }
 
+    @PostMapping("updatestatus")
+    public boolean updateClothStatus(@RequestBody ClothesList clothesList) {
+        log.info(clothesList.toString());
+        clothesListRepository.updateClothStatus(clothesList.getName(), clothesList.getStatus());
+        return true;
+    }
+
     @GetMapping("weatherinfo")
     public StylingDTO getWeather(){
         //日付取得

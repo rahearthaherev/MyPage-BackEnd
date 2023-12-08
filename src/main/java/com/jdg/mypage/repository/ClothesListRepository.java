@@ -12,4 +12,8 @@ public interface ClothesListRepository extends CrudRepository<ClothesList, Long>
     @Modifying
     @Query("DELETE FROM ClothesList c WHERE c.name = :name")
     int deleteCloth(@Param("name")String name);
+
+    @Modifying
+    @Query("UPDATE ClothesList c SET c.status = :status  WHERE c.name=:name")
+    int updateClothStatus(@Param("name") String name, @Param("status") int status);
 }

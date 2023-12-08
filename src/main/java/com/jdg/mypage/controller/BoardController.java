@@ -40,7 +40,7 @@ public class BoardController {
     }
 
     @PostMapping("submit")
-    public boolean submitBoard(@RequestBody BoardDTO boardDTO) {
+    public BoardDTO submitBoard(@RequestBody BoardDTO boardDTO) {
         log.info(boardDTO.toString());
         return boardService.addBoard(boardDTO);
     }
