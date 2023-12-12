@@ -1,5 +1,9 @@
 package com.jdg.mypage.controller;
 
+import com.jdg.mypage.dto.SkillStackDTO;
+import com.jdg.mypage.entity.SkillStackList;
+import com.jdg.mypage.mapper.MainMapper;
+import com.jdg.mypage.repository.MainRepository;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,11 @@ import org.springframework.http.HttpHeaders;
 //Request URL의 패턴으로 해당 클래스를 실행
 @RequestMapping("/")
 public class MainController {
+    private MainRepository mainRepository;
+
+    public MainController(MainRepository mainRepository) {
+        this.mainRepository = mainRepository;
+    }
 
     //Request URL의 말단 패턴으로 해당 메소드를 실행
     @GetMapping("")
@@ -47,4 +56,15 @@ public class MainController {
                 .body(resource);
     }
 
+    @GetMapping("getskillstacktype")
+    public Iterable<String> getSkillStackType() {
+        Iterable<String> typeList = mainRepository.getType();
+        return typeList;
+    }
+
+    @GetMapping("getskillstacklist")
+    public Iterable<SkillStackDTO> getSkillStackList() {
+        Iterable<SkillStackList> skillStackList = mainRepository.findAll();
+        return MainMapper.INSTANCE.iterableEntityToDto(skillStackList);
+    }
 }
