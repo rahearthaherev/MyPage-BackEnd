@@ -28,7 +28,6 @@ public class BoardController {
     @PostMapping("header")
     public List<MenuDetail> GetMenuList(@RequestBody MenuDetail menu) {
         List<MenuDetail> menuList = menuDetailRepository.findSameCatagoryMenu(menu.getMenu_sub_key());
-        log.info(menuList.toString());
         return menuList;
     }
     @PostMapping("list")
@@ -41,15 +40,12 @@ public class BoardController {
 
     @PostMapping("submit")
     public BoardDTO submitBoard(@RequestBody BoardDTO boardDTO) {
-        log.info(boardDTO.toString());
         return boardService.addBoard(boardDTO);
     }
 
     @PostMapping("getpage")
     public BoardList getBoard(@RequestBody String[] key) {
-        log.info(key[0]);
         BoardList boardList = boardRepository.getBoard(key[0]);
-        log.info(boardList.toString());
         return boardList;
     }
 
