@@ -38,7 +38,7 @@ public class MainController {
     @GetMapping("download")
     public ResponseEntity<FileSystemResource> downloadFile() {
         // 다운로드할 파일 경로
-        String filePath = "C:/myUpload/スキルシート＿Jeong-DaeGyun.xlsx";
+        String filePath = "/home/ubuntu/mypage/スキルシート＿Jeong-DaeGyun.xlsx";
 
         // 파일을 FileSystemResource로 래핑하여 다운로드 응답 생성
         File file = new File(filePath);
