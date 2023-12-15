@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-@CrossOrigin(originPatterns = "http://localhost:3000")
+@CrossOrigin(originPatterns = "*")
 @RestController
 @Slf4j
 @RequestMapping("/board/")
