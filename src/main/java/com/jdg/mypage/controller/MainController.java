@@ -1,8 +1,15 @@
 package com.jdg.mypage.controller;
 
+import com.jdg.mypage.dto.MainProjectListDTO;
+import com.jdg.mypage.dto.MainProjectSkillDTO;
 import com.jdg.mypage.dto.SkillStackDTO;
+import com.jdg.mypage.entity.MainProjectList;
+import com.jdg.mypage.entity.MainProjectSkillList;
 import com.jdg.mypage.entity.SkillStackList;
 import com.jdg.mypage.mapper.MainMapper;
+import com.jdg.mypage.mapper.MainProjectMapper;
+import com.jdg.mypage.repository.MainProjectListRepository;
+import com.jdg.mypage.repository.MainProjectSkillRepository;
 import com.jdg.mypage.repository.MainRepository;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -24,9 +31,13 @@ import org.springframework.http.HttpHeaders;
 @RequestMapping("/")
 public class MainController {
     private MainRepository mainRepository;
+    private MainProjectSkillRepository mainProjectSkillRepository;
+    private MainProjectListRepository mainProjectListRepository;
 
-    public MainController(MainRepository mainRepository) {
+    public MainController(MainRepository mainRepository, MainProjectListRepository mainProjectListRepository, MainProjectSkillRepository mainProjectSkillRepository ) {
         this.mainRepository = mainRepository;
+        this.mainProjectListRepository = mainProjectListRepository;
+        this.mainProjectSkillRepository = mainProjectSkillRepository;
     }
 
     //Request URL의 말단 패턴으로 해당 메소드를 실행
@@ -67,4 +78,17 @@ public class MainController {
         Iterable<SkillStackList> skillStackList = mainRepository.findAll();
         return MainMapper.INSTANCE.iterableEntityToDto(skillStackList);
     }
+
+    @GetMapping("getprojectlist")
+    public Iterable<MainProjectListDTO> getMainProjectList() {
+        Iterable<MainProjectList> mainProjectListIterable = mainProjectListRepository.findAll();
+        return MainProjectMapper.INSTANCE.mainProjectListEntityToDto(mainProjectListIterable);
+    }
+
+    @GetMapping("getprojectskilllist")
+    public Iterable<MainProjectSkillDTO> getMainProjectSkillList(){
+        Iterable<MainProjectSkillList> mainProjectSkillLists = mainProjectSkillRepository.findAll();
+        return MainProjectMapper.INSTANCE.mainProjectSkillListEntityToDto(mainProjectSkillLists);
+    }
+
 }
