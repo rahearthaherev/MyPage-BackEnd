@@ -18,4 +18,5 @@ public class MainProjectListDTO {
     private int teamNumber;
     private String startProcess;
     private String endProcess;
+    private String description;
 }

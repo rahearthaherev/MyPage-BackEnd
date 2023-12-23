@@ -33,4 +33,6 @@ public class MainProjectList {
     private String startProcess;
     @Column
     private String endProcess;
+    @Column
+    private String description;
 }
