@@ -17,8 +17,10 @@ import jakarta.persistence.Id;
 @Setter
 public class MainProjectSkillList {
     @Column
-    @Id
     private String projectId;
     @Column
     private String skillName;
+    @Id
+    @Column
+    private int index;
 }

@@ -10,4 +10,6 @@ import lombok.*;
 public class MainProjectSkillDTO {
     private String projectId;
     private String skillName;
+
+    private int index;
 }
