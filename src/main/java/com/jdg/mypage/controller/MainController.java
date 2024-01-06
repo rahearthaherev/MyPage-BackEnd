@@ -81,7 +81,7 @@ public class MainController {
 
     @GetMapping("getprojectlist")
     public Iterable<MainProjectListDTO> getMainProjectList() {
-        Iterable<MainProjectList> mainProjectListIterable = mainProjectListRepository.findAll();
+        Iterable<MainProjectList> mainProjectListIterable = mainProjectListRepository.getMainProjects();
         return MainProjectMapper.INSTANCE.mainProjectListEntityToDto(mainProjectListIterable);
     }
 
@@ -89,6 +89,11 @@ public class MainController {
     public Iterable<MainProjectSkillDTO> getMainProjectSkillList(){
         Iterable<MainProjectSkillList> mainProjectSkillLists = mainProjectSkillRepository.findAll();
         return MainProjectMapper.INSTANCE.mainProjectSkillListEntityToDto(mainProjectSkillLists);
+    }
+
+    @GetMapping("getskillstackname")
+    public Iterable<String> getSkillStackName() {
+        return mainRepository.getName();
     }
 
 }
