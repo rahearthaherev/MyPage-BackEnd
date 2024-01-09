@@ -11,13 +11,11 @@ import com.jdg.mypage.mapper.MainProjectMapper;
 import com.jdg.mypage.repository.MainProjectListRepository;
 import com.jdg.mypage.repository.MainProjectSkillRepository;
 import com.jdg.mypage.repository.MainRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +27,7 @@ import org.springframework.http.HttpHeaders;
 @RestController
 //Request URL의 패턴으로 해당 클래스를 실행
 @RequestMapping("/")
+@Slf4j
 public class MainController {
     private MainRepository mainRepository;
     private MainProjectSkillRepository mainProjectSkillRepository;
@@ -96,4 +95,31 @@ public class MainController {
         return mainRepository.getName();
     }
 
+    @GetMapping("getskillindex")
+    public int getSkillIndex() {
+        return mainProjectSkillRepository.getLastIndex() + 1;
+    }
+    @PostMapping("addproject")
+    public String addProject(@RequestBody MainProjectList mainProjectList) {
+        int index = mainProjectListRepository.getLastIndex() + 1;
+        String projectId = makeProjectId(mainProjectList.getProjectName(), index);
+        mainProjectList.setProjectId(projectId);
+        mainProjectList.setIndex(index);
+        log.info(mainProjectList.toString());
+        mainProjectListRepository.save(mainProjectList);
+        return projectId;
+    }
+
+    @PostMapping("addskilllist")
+    public boolean addSkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
+        log.info(mainProjectSkillLists.toString());
+        mainProjectSkillRepository.saveAll(mainProjectSkillLists);
+        return true;
+    }
+
+
+
+    public String makeProjectId(String projectName, int index) {
+        return projectName.substring(0, 2) + String.format("%03d", index);
+    }
 }

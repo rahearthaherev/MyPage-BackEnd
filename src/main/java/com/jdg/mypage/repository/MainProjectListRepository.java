@@ -8,4 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface MainProjectListRepository extends CrudRepository<MainProjectList, String> {
     @Query("SELECT m FROM MainProjectList m ORDER BY m.startDate")
     Iterable<MainProjectList> getMainProjects();
+
+    @Query("SELECT m.index FROM MainProjectList m ORDER BY m.index DESC LIMIT 1")
+    int getLastIndex();
 }
