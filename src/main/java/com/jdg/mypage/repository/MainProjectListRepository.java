@@ -11,4 +11,5 @@ public interface MainProjectListRepository extends CrudRepository<MainProjectLis
 
     @Query("SELECT m.index FROM MainProjectList m ORDER BY m.index DESC LIMIT 1")
     int getLastIndex();
+
 }

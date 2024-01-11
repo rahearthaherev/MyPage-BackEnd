@@ -112,12 +112,30 @@ public class MainController {
 
     @PostMapping("addskilllist")
     public boolean addSkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
+        mainProjectSkillRepository.saveAll(mainProjectSkillLists);
+        return true;
+    }
+
+    @PostMapping("modifyproject")
+    public boolean modifyProject(@RequestBody MainProjectList mainProjectList){
+        mainProjectSkillRepository.deleteProjectSkill(mainProjectList.getProjectId());
+        mainProjectListRepository.save(mainProjectList);
+        return true;
+    }
+
+    @PostMapping("modifyskilllist")
+    public boolean modifySkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
         log.info(mainProjectSkillLists.toString());
         mainProjectSkillRepository.saveAll(mainProjectSkillLists);
         return true;
     }
 
-
+    @PostMapping("deleteproject")
+    public boolean deleteProject(@RequestBody MainProjectList mainProjectList){
+        mainProjectSkillRepository.deleteProjectSkill(mainProjectList.getProjectId());
+        mainProjectListRepository.deleteById(mainProjectList.getProjectId());
+        return true;
+    }
 
     public String makeProjectId(String projectName, int index) {
         return projectName.substring(0, 2) + String.format("%03d", index);

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -22,9 +23,9 @@ public class MainProjectList {
     @Column
     private String projectName;
     @Column
-    private Timestamp startDate;
+    private Date startDate;
     @Column
-    private Timestamp endDate;
+    private Date endDate;
     @Column
     private int teamNumber;
     @Column
