@@ -7,4 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface MainRepository extends CrudRepository<SkillStackList, String> {
     @Query("SELECT DISTINCT s.type FROM SkillStackList s")
     public Iterable<String> getType();
+
+    @Query("SELECT DISTINCT s.name FROM SkillStackList s")
+    public Iterable<String> getName();
 }

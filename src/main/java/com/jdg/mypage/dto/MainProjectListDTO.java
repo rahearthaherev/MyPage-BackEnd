@@ -2,6 +2,7 @@ package com.jdg.mypage.dto;
 
 import lombok.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Setter
@@ -13,8 +14,8 @@ public class MainProjectListDTO {
     private int index;
     private String projectId;
     private String projectName;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private Date startDate;
+    private Date endDate;
     private int teamNumber;
     private String startProcess;
     private String endProcess;

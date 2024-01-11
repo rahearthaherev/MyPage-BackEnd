@@ -3,11 +3,9 @@ package com.jdg.mypage.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -15,6 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class MainProjectList {
     @Column
     private int index;
@@ -24,9 +23,9 @@ public class MainProjectList {
     @Column
     private String projectName;
     @Column
-    private Timestamp startDate;
+    private Date startDate;
     @Column
-    private Timestamp endDate;
+    private Date endDate;
     @Column
     private int teamNumber;
     @Column

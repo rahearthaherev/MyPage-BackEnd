@@ -34,7 +34,7 @@ public class StylingService {
     @Scheduled(cron = "0 01 0  * * ?")
     public void getWeatherDataForStyling() {
 
-        String URL = "https://api.pirateweather.net/forecast/tnZVRSTIILHMNbidLrb6uQzwEBiP0HX4/35.6894,139.692?exclude=alerts,minutely&units=si";
+        String URL = "https://api.pirateweather.net/forecast/tnZVRSTIILHMNbidLrb6uQzwEBiP0HX4/35.6554,139.3239?exclude=alerts,minutely&units=si";
         Mono<WeatherDTO> weatherData = getDataFromApi(URL);
         WeatherDTO weatherDTO = weatherData.block();
         log.info(weatherDTO.toString());
