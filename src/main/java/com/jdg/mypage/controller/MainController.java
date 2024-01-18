@@ -47,19 +47,15 @@ public class MainController {
 
     @GetMapping("download")
     public ResponseEntity<FileSystemResource> downloadFile() {
-        // 다운로드할 파일 경로
         String filePath = "/home/ubuntu/mypage/スキルシート＿Jeong-DaeGyun.xlsx";
 
-        // 파일을 FileSystemResource로 래핑하여 다운로드 응답 생성
         File file = new File(filePath);
         FileSystemResource resource = new FileSystemResource(file);
 
-        // 파일 다운로드를 위한 응답 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file_name.ext");
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
-        // 파일 다운로드 응답 생성 및 반환
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(file.length())
