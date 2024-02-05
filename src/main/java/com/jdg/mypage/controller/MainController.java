@@ -13,6 +13,7 @@ import com.jdg.mypage.repository.MainProjectSkillRepository;
 import com.jdg.mypage.repository.MainRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,77 +64,84 @@ public class MainController {
     }
 
     @GetMapping("getskillstacktype")
-    public Iterable<String> getSkillStackType() {
+    public ResponseEntity<Iterable<String>> getSkillStackType() {
         Iterable<String> typeList = mainRepository.getType();
-        return typeList;
+        return new ResponseEntity<>(typeList, HttpStatus.OK);
     }
 
     @GetMapping("getskillstacklist")
-    public Iterable<SkillStackDTO> getSkillStackList() {
+    public ResponseEntity<Iterable<SkillStackDTO>> getSkillStackList() {
         Iterable<SkillStackList> skillStackList = mainRepository.findAll();
-        return MainMapper.INSTANCE.iterableEntityToDto(skillStackList);
+        Iterable<SkillStackDTO> skillStackDTOList = MainMapper.INSTANCE.iterableEntityToDto(skillStackList);
+        return new ResponseEntity<>(skillStackDTOList, HttpStatus.OK);
     }
 
     @GetMapping("getprojectlist")
-    public Iterable<MainProjectListDTO> getMainProjectList() {
+    public ResponseEntity<Iterable<MainProjectListDTO>> getMainProjectList() {
         Iterable<MainProjectList> mainProjectListIterable = mainProjectListRepository.getMainProjects();
-        return MainProjectMapper.INSTANCE.mainProjectListEntityToDto(mainProjectListIterable);
+        Iterable<MainProjectListDTO> mainProjectListDTOList = MainProjectMapper.INSTANCE.mainProjectListEntityToDto(mainProjectListIterable);
+        return new ResponseEntity<>(mainProjectListDTOList, HttpStatus.OK);
     }
 
     @GetMapping("getprojectskilllist")
-    public Iterable<MainProjectSkillDTO> getMainProjectSkillList(){
+    public ResponseEntity<Iterable<MainProjectSkillDTO>> getMainProjectSkillList(){
         Iterable<MainProjectSkillList> mainProjectSkillLists = mainProjectSkillRepository.findAll();
-        return MainProjectMapper.INSTANCE.mainProjectSkillListEntityToDto(mainProjectSkillLists);
+        Iterable<MainProjectSkillDTO> mainProjectSkillDTOList = MainProjectMapper.INSTANCE.mainProjectSkillListEntityToDto(mainProjectSkillLists);
+        return new ResponseEntity<>(mainProjectSkillDTOList, HttpStatus.OK);
     }
 
     @GetMapping("getskillstackname")
-    public Iterable<String> getSkillStackName() {
-        return mainRepository.getName();
+    public ResponseEntity<Iterable<String>> getSkillStackName() {
+        Iterable<String> skillstackNameList = mainRepository.getName();
+        return new ResponseEntity<>(skillstackNameList, HttpStatus.OK);
     }
 
     @GetMapping("getskillindex")
-    public int getSkillIndex() {
-        return mainProjectSkillRepository.getLastIndex() + 1;
+    public ResponseEntity<Integer> getSkillIndex() {
+        int index = mainProjectSkillRepository.getLastIndex() + 1;
+        return new ResponseEntity<>(index, HttpStatus.OK);
+
     }
     @PostMapping("addproject")
-    public String addProject(@RequestBody MainProjectList mainProjectList) {
+    public ResponseEntity<String> addProject(@RequestBody MainProjectList mainProjectList) {
         int index = mainProjectListRepository.getLastIndex() + 1;
         String projectId = makeProjectId(mainProjectList.getProjectName(), index);
         mainProjectList.setProjectId(projectId);
         mainProjectList.setIndex(index);
         log.info(mainProjectList.toString());
         mainProjectListRepository.save(mainProjectList);
-        return projectId;
+        return new ResponseEntity<>(projectId, HttpStatus.OK);
     }
 
     @PostMapping("addskilllist")
-    public boolean addSkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
+    public ResponseEntity<Boolean> addSkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
         mainProjectSkillRepository.saveAll(mainProjectSkillLists);
-        return true;
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PostMapping("modifyproject")
-    public boolean modifyProject(@RequestBody MainProjectList mainProjectList){
+    public ResponseEntity<Boolean> modifyProject(@RequestBody MainProjectList mainProjectList){
         mainProjectSkillRepository.deleteProjectSkill(mainProjectList.getProjectId());
         mainProjectListRepository.save(mainProjectList);
-        return true;
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PostMapping("modifyskilllist")
-    public boolean modifySkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
+    public ResponseEntity<Boolean> modifySkillList(@RequestBody Iterable<MainProjectSkillList> mainProjectSkillLists) {
         log.info(mainProjectSkillLists.toString());
         mainProjectSkillRepository.saveAll(mainProjectSkillLists);
-        return true;
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PostMapping("deleteproject")
-    public boolean deleteProject(@RequestBody MainProjectList mainProjectList){
+    public ResponseEntity<Boolean> deleteProject(@RequestBody MainProjectList mainProjectList){
         mainProjectSkillRepository.deleteProjectSkill(mainProjectList.getProjectId());
         mainProjectListRepository.deleteById(mainProjectList.getProjectId());
-        return true;
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     public String makeProjectId(String projectName, int index) {
         return projectName.substring(0, 2) + String.format("%03d", index);
+
     }
 }
