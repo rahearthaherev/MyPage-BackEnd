@@ -7,7 +7,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class ACDetailsDTO {
+public class AcDetailsDTO {
     private String key;
     private String subKey;
     private String category;

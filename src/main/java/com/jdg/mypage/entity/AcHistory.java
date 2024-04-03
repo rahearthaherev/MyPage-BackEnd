@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class ACHistory {
+public class AcHistory {
     @Column
     @Id
     private String key;
@@ -25,9 +25,9 @@ public class ACHistory {
     @Column
     private String account;
     @Column
-    private String from;
+    private String beforeAccount;
     @Column
-    private String to;
+    private String afterAccount;
     @Column
     private int amount;
     @Column

@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class ACDetail {
+public class AcDetail {
     @Column
     private String key;
     @Column

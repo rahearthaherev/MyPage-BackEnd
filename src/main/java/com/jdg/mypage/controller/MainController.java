@@ -16,6 +16,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -29,10 +30,11 @@ import org.springframework.http.HttpHeaders;
 //Request URL의 패턴으로 해당 클래스를 실행
 @RequestMapping("/")
 @Slf4j
+@Transactional
 public class MainController {
-    private MainRepository mainRepository;
-    private MainProjectSkillRepository mainProjectSkillRepository;
-    private MainProjectListRepository mainProjectListRepository;
+    private final MainRepository mainRepository;
+    private final MainProjectSkillRepository mainProjectSkillRepository;
+    private final MainProjectListRepository mainProjectListRepository;
 
     public MainController(MainRepository mainRepository, MainProjectListRepository mainProjectListRepository, MainProjectSkillRepository mainProjectSkillRepository ) {
         this.mainRepository = mainRepository;

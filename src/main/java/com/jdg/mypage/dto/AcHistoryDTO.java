@@ -9,15 +9,15 @@ import java.sql.Timestamp;
 @ToString
 @Getter
 @Setter
-public class ACHistoryDTO {
+public class AcHistoryDTO {
     private String key;
     private Timestamp date;
     private String type;
     private String payment;
     private String account;
-    private String from;
-    private String to;
+    private String beforeAccount;
+    private String afterAccount;
     private int amount;
     private String title;
-    private ACDetailsDTO[] details;
+    private AcDetailsDTO[] details;
 }
