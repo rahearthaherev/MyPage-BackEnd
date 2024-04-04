@@ -10,10 +10,14 @@ import com.jdg.mypage.repository.AcBookDetailRepository;
 import com.jdg.mypage.repository.AcBookHistoryRepository;
 import com.jdg.mypage.repository.AssetsRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @CrossOrigin(originPatterns = "*")
@@ -45,22 +49,39 @@ public class ACBookController {
         return 0;
     }
 
+    @PostMapping("save")
+    public int writeSaveHistory(@RequestBody AcHistoryDTO acHistoryDTO) {
+        String key = makeKey(acHistoryDTO.getDate(), acHistoryDTO.getTitle());
+        AcHistory acHistory = convertHistoryEntity(acHistoryDTO, key);
+        log.info(acHistory.toString());
+        acBookHistoryRepository.save(acHistory);
+        return 0;
+    }
+
     @PostMapping("getyearhistory")
     public AcHistoryDTO getYearHistory(@RequestBody Timestamp date) {
-        log.info(date.toString());
         return null;
     }
 
     @PostMapping("getmonthhistory")
     public AcHistoryDTO getMonthHistory(@RequestBody Timestamp date) {
-        log.info(date.toString());
         return null;
     }
 
     @PostMapping("getdatehistory")
-    public AcHistoryDTO getDateHistory(@RequestBody Timestamp date) {
-        log.info(date.toString());
-        return null;
+    public ResponseEntity<Iterable<AcHistoryDTO>>  getDateHistory(@RequestBody Timestamp date) {
+        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+        SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
+        SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
+
+        int year = Integer.parseInt(sdfYear.format(date));
+        int month = Integer.parseInt(sdfMonth.format(date));
+        int day = Integer.parseInt(sdfDay.format(date));
+
+        Iterable<AcHistory> acHistory = acBookHistoryRepository.getDateHistory(year, month, day);
+        Iterable<AcHistoryDTO> acHistoryDTOS = convertHistoryDTO(acHistory);
+        log.info(acHistoryDTOS.toString());
+        return new ResponseEntity<>(acHistoryDTOS, HttpStatus.OK);
     }
 
     private AcHistory convertHistoryEntity(AcHistoryDTO acHistoryDTO, String key) {
@@ -83,6 +104,34 @@ public class ACBookController {
 
         return ACHistoryMapper.INSTANCE.dtoToEntity(acHistoryDTO);
     }
+    private Iterable<AcHistoryDTO> convertHistoryDTO(Iterable<AcHistory> acHistories) {
+
+        ArrayList<AcHistoryDTO> addedAcHistoryDTO = new ArrayList<>();
+
+        for(AcHistory acHistory : acHistories){
+            String key = acHistory.getKey();
+
+            Iterable<AcDetail> acDetails = acBookDetailRepository.getDetails(key);
+            Iterable<AcDetailsDTO> acDetailsDTOS = ACDetailMapper.INSTANCE.entityToDto(acDetails);
+
+            AcDetailsDTO[] filteredDetails = filterByKey(acDetailsDTOS, key);
+
+
+            Timestamp date = acHistory.getDate();
+            String type = acHistory.getType();
+            String payment = acHistory.getPayment();
+            String account = acHistory.getAccount();
+            String beforeAccount = acHistory.getBeforeAccount();
+            String afterAccount = acHistory.getAfterAccount();
+            int amount = acHistory.getAmount();
+            String title = acHistory.getTitle();
+            AcHistoryDTO acHistoryDTO = new AcHistoryDTO(key, date, type, payment, account, beforeAccount, afterAccount, amount, title, filteredDetails);
+
+            addedAcHistoryDTO.add(acHistoryDTO);
+        }
+
+        return () -> Arrays.stream(addedAcHistoryDTO.toArray(new AcHistoryDTO[0])).iterator();
+    }
 
     private Iterable<AcDetail> convertDetailEntity(AcDetailsDTO[] acDetailsDTO, String key) {
         for(int i = 0; i < acDetailsDTO.length; i++) {
@@ -96,5 +145,15 @@ public class ACBookController {
 
     private String makeKey(Timestamp date, String title) {
         return (title.charAt(0) + "" + title.charAt(1)).toUpperCase() + date.getTime();
+    }
+
+    private AcDetailsDTO[] filterByKey(Iterable<AcDetailsDTO> iterable, String key) {
+        ArrayList<AcDetailsDTO> filteredDetails = new ArrayList<>();
+        for (AcDetailsDTO details : iterable) {
+            if (details.getKey().equals(key)) {
+                filteredDetails.add(details);
+            }
+        }
+        return filteredDetails.toArray(new AcDetailsDTO[0]);
     }
 }
