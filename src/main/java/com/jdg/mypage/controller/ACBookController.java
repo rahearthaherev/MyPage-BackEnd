@@ -59,13 +59,29 @@ public class ACBookController {
     }
 
     @PostMapping("getyearhistory")
-    public AcHistoryDTO getYearHistory(@RequestBody Timestamp date) {
-        return null;
+    public ResponseEntity<Iterable<AcHistoryDTO>> getYearHistory(@RequestBody Timestamp date) {
+        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+
+        int year = Integer.parseInt(sdfYear.format(date));
+
+        Iterable<AcHistory> acHistory = acBookHistoryRepository.getYearHistory(year);
+        Iterable<AcHistoryDTO> acHistoryDTOS = convertHistoryDTO(acHistory);
+        log.info(acHistoryDTOS.toString());
+        return new ResponseEntity<>(acHistoryDTOS, HttpStatus.OK);
     }
 
     @PostMapping("getmonthhistory")
-    public AcHistoryDTO getMonthHistory(@RequestBody Timestamp date) {
-        return null;
+    public ResponseEntity<Iterable<AcHistoryDTO>> getMonthHistory(@RequestBody Timestamp date) {
+        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+        SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
+
+        int year = Integer.parseInt(sdfYear.format(date));
+        int month = Integer.parseInt(sdfMonth.format(date));
+
+        Iterable<AcHistory> acHistory = acBookHistoryRepository.getMonthHistory(year, month);
+        Iterable<AcHistoryDTO> acHistoryDTOS = convertHistoryDTO(acHistory);
+        log.info(acHistoryDTOS.toString());
+        return new ResponseEntity<>(acHistoryDTOS, HttpStatus.OK);
     }
 
     @PostMapping("getdatehistory")
