@@ -11,10 +11,12 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class Assets {
+public class AcAssets {
     @Id
     @Column
     private String account;
     @Column
     private int amount;
+    @Column
+    private String type;
 }

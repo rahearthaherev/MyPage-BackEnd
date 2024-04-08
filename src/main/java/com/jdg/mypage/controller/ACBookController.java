@@ -100,6 +100,33 @@ public class ACBookController {
         return new ResponseEntity<>(acHistoryDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("gettotal")
+    public ResponseEntity<Integer> getTotal(){
+        int account = assetsRepository.getAccount();
+        int cash = assetsRepository.getCash();
+        int credit = assetsRepository.getCredit();
+        int result = account + cash - credit;
+        return new ResponseEntity<Integer>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("getcredit")
+    public ResponseEntity<Integer> getCredit(){
+        Integer result = assetsRepository.getCredit();
+        return new ResponseEntity<Integer>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("getcash")
+    public ResponseEntity<Integer> getCash(){
+        Integer result = assetsRepository.getCash();
+        return new ResponseEntity<Integer>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("getaccount")
+    public ResponseEntity<Integer> getAccount(){
+        Integer result = assetsRepository.getAccount();
+        return new ResponseEntity<Integer>(result, HttpStatus.OK);
+    }
+
     private AcHistory convertHistoryEntity(AcHistoryDTO acHistoryDTO, String key) {
         acHistoryDTO.setKey(key);
         if(acHistoryDTO.getType().equals("支出") || acHistoryDTO.getType().equals("輸入")) {
@@ -131,7 +158,6 @@ public class ACBookController {
             Iterable<AcDetailsDTO> acDetailsDTOS = ACDetailMapper.INSTANCE.entityToDto(acDetails);
 
             AcDetailsDTO[] filteredDetails = filterByKey(acDetailsDTOS, key);
-
 
             Timestamp date = acHistory.getDate();
             String type = acHistory.getType();
