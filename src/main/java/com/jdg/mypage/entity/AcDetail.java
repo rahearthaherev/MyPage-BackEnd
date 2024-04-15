@@ -22,5 +22,7 @@ public class AcDetail {
     @Column
     private String description;
     @Column
+    private int tax;
+    @Column
     private int amount;
 }
