@@ -16,5 +16,5 @@ public interface AssetsRepository extends CrudRepository<AcAssets, String> {
 
     @Query("SELECT SUM(a.amount) FROM AcAssets a WHERE a.type = '貯金'")
     Integer getSave();
-
+    
 }

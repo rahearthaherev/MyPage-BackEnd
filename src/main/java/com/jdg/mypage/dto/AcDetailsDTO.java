@@ -12,5 +12,6 @@ public class AcDetailsDTO {
     private String subKey;
     private String category;
     private String description;
+    private int tax;
     private int amount;
 }

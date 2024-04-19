@@ -41,6 +41,8 @@ public class ACBookController {
         String key = makeKey(acHistoryDTO.getDate(), acHistoryDTO.getTitle());
         AcHistory acHistory = convertHistoryEntity(acHistoryDTO, key);
         Iterable<AcDetail> acDetail = convertDetailEntity(acHistoryDTO.getDetails(), key);
+
+
         log.info(acHistory.toString());
         log.info(acDetail.toString());
         acBookHistoryRepository.save(acHistory);
@@ -127,6 +129,15 @@ public class ACBookController {
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
 
+    @DeleteMapping("deletehistory/{key}")
+    public int getMonthHistorytest(@PathVariable String key) {
+        acBookDetailRepository.deleteDetails(key);
+        acBookHistoryRepository.deleteById(key);
+        return 0;
+    }
+
+
+
     private AcHistory convertHistoryEntity(AcHistoryDTO acHistoryDTO, String key) {
         acHistoryDTO.setKey(key);
         if(acHistoryDTO.getType().equals("支出") || acHistoryDTO.getType().equals("輸入")) {
@@ -134,15 +145,25 @@ public class ACBookController {
             acHistoryDTO.setBeforeAccount(null);
 
             AcDetailsDTO[] acDetailsDTOS = acHistoryDTO.getDetails();
-            int total = 0;
+            int total0 = 0;
+            int total8 = 0;
+            int total10 = 0;
             for (AcDetailsDTO acDetailsDTO : acDetailsDTOS) {
-                total = total + acDetailsDTO.getAmount();
+                if(acDetailsDTO.getTax() == 0) {
+                    total0 = total0 + acDetailsDTO.getAmount();
+                }else if(acDetailsDTO.getTax() == 8) {
+                    total8 = total8 + acDetailsDTO.getAmount();
+                }else {
+                    total10 = total10 + acDetailsDTO.getAmount();
+                }
             }
-            acHistoryDTO.setAmount(total);
+            total8 = (int)(total8 * 1.08);
+            total10 = (int)(total10 * 1.1);
+
+            acHistoryDTO.setAmount(total0 + total8 + total10);
         }else {
             acHistoryDTO.setDetails(null);
             acHistoryDTO.setPayment(null);
-            acHistoryDTO.setAccount(null);
         }
 
         return ACHistoryMapper.INSTANCE.dtoToEntity(acHistoryDTO);
